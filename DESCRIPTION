@@ -1,6 +1,6 @@
 Package: calval
 Title: Validate Calibrated Sensor Performance
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     c(person(given = "Danielle", 
     family = "Dempsey", 
@@ -11,7 +11,7 @@ Authors@R:
     email = "ntorrie@perennia.ca", 
     role = "aut"))
 Maintainer: Danielle Dempsey <ddempsey@perennia.ca>
-Description: Facilitates calibration validation of Water Quality sensors deployed for CMAR's Coastal Monitoring Program. (Compatible sensors: Hobo Pro V2, Hobo DO, aquaMeasure DOT, aquaMeasure SAL). Researchers can verify whether sensors are operating within an acceptable range prior to and after sensor deployment.
+Description: Facilitates calibration validation of Water Quality sensors deployed for CMAR's Coastal Monitoring Program. (Compatible sensors: Hobo Pro V2, Hobo DO, Hobo pH, aquaMeasure DOT, aquaMeasure SAL). Researchers can verify whether sensors are operating within an acceptable range prior to and after sensor deployment.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true

@@ -11,18 +11,13 @@ cv_read_calval_tracking(link = NULL, sheet = "pre")
 CMAR tracking sheet.}
 
 \item{sheet}{Character string with the name of the sheet to read in or an
-abbreviation of the sheet name. \code{sheet = "pre"} will read in the sheet
-"Pre Deployment CalVal". \code{sheet = "post"} will read in sheet "Post
-Deployment Validation".}
+abbreviation of the sheet name. Options are \code{sheet = "pre"} and
+\code{sheet = "post"}.}
 }
 \value{
 Returns a data frame of the calval tracking sheet. Deployment and
   retrieval datetimes are appended in "Canada/Atlantic" and "UTC" timezones.
 }
 \description{
-TODO: convert variable column to sensorstring vars & sensor model to proper
-models
-}
-\details{
-TODO: update sheet names
+Read in CMAR calval tracking sheet
 }

@@ -4,13 +4,13 @@
 \alias{cv_create_log}
 \title{Create metadata log from calval tracking sheet}
 \usage{
-cv_create_log(path, tracking)
+cv_create_log(path = NULL, event_id)
 }
 \arguments{
 \item{path}{File path to the Log folder.}
 
-\item{tracking}{calval tracking sheet, as downloaded from
-\code{cv_read_calval_tracking()}.}
+\item{event_id}{The event_id for which to create the log. Must match an entry
+in the event_id column of the calval tracking sheet.}
 }
 \value{
 Exports csv file to /log folder in the log format required for

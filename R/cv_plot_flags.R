@@ -27,6 +27,7 @@
 #' @importFrom dplyr case_when mutate
 #' @importFrom grDevices colorRampPalette
 #' @importFrom RColorBrewer brewer.pal
+#' @importFrom sensorstrings ss_pivot_longer
 #'
 #' @export
 #'

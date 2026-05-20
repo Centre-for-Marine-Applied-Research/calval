@@ -10,15 +10,14 @@ cv_assign_tolerance_flag(dat, tolerance = NULL, vr2ar_tol = 0.5)
 \item{dat}{Data frame of compiled validation data with column
 \code{round_timestamp}, as returned from \code{cv_round_timestamps()}.}
 
-\item{tolerance}{A data frame with the expected accuracy for each variable.
+\item{tolerance}{A data frame with the specified accuracy for each variable.
 Must have two columns: \code{variable}, which has an entry for each
 variable in \code{dat}, and \code{tol}, with the accuracy. Note this
 assumes only one type of sensor for each variable, or that the sensors have
 the same tolerance. Exception: the tolerance for the VR2AR temperature
 sensors may be set in \code{vr2ar_tol} argument.}
 
-\item{vr2ar_tol}{The tolerance for the VR2AR temperature sensors. **The
-default will overwrite the temperature tolerance in \code{tolerance}.** Set
+\item{vr2ar_tol}{The tolerance for the VR2AR temperature sensors. Set
 \code{vr2ar_tol = NULL} to use the same value for all temperature sensors.}
 }
 \value{
@@ -27,9 +26,5 @@ Returns dat with several additional columns: tolerance, med,
 }
 \description{
 The tolerance flag is based on the median value of the time interval
-plus/minus to tolerance (accuracy) for each variable.
-}
-\details{
-TODO: Add option to overwrite tol_min and tol_max with threshold values,
-e.g., for dissolved oxygen.
+plus/minus the specified accuracy for each variable.
 }

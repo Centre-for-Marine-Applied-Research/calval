@@ -2,8 +2,8 @@
 #'
 #' @param path File path to the Log folder.
 #'
-#' @param tracking calval tracking sheet, as downloaded from
-#'   \code{cv_read_calval_tracking()}.
+#' @param event_id The event_id for which to create the log. Must match an entry
+#'   in the event_id column of the calval tracking sheet.
 #'
 #' @return Exports csv file to /log folder in the log format required for
 #'   compiling data with \code{sensorstrings}.
@@ -15,44 +15,29 @@
 #' @export
 #'
 
-cv_create_log <- function(path, tracking) {
+cv_create_log <- function(path = NULL, event_id) {
 
-  val_id <- unique(tracking$validation_id)
+  event_id <- tolower(event_id)
 
-  if(length(val_id) > 1) {
-    stop("More than 1 validation id found in tracking: ",
-      paste(val_id, collapse = " "))
+ # if(is.null(path)) path <- ""
+
+  tracking <- cv_read_calval_tracking() %>%
+    filter(event_id == !!event_id)
+
+  if(nrow(tracking) == 0) {
+    stop("No rows in calval tracking for event id ", event_id)
   }
 
   tracking %>%
-    distinct(sensor_serial_number, .keep_all = TRUE) %>%
-    mutate(
-      Logger_Latitude = 44.66,
-      Logger_Longitude = -63.56,
-      Sensor_Depth = 999,
-      Deployment_Waterbody = "bucket",
-      `Lease#` = NA,
-      Configuration = NA,
-      Location_Description = "validation",
-      Deployment = min(val_start_date),
-      Retrieval = max(val_end_date),
-    ) %>%
     select(
-      validation_id,
-      Deployment_Waterbody,
-      Location_Description,
-      `Lease#`,
-      Deployment,
-      Retrieval ,
-      Logger_Latitude,
-      Logger_Longitude,
-      Logger_Model = sensor_model,
-      `Serial#` = sensor_serial_number,
-      Sensor_Depth,
-      Configuration
+      event_id,
+      deployment = start_date,
+      retrieval = end_date,
+      sensor_type, sensor_serial_number
     ) %>%
+    distinct() %>%
     fwrite(
-      file = paste0(path, "/", "Log", "/", val_id, "_log.csv"),
+      file = paste0(path, "/log/", event_id, "_log.csv"),
       na = "NA",
       showProgress = TRUE,
       col.names = TRUE
