@@ -1,6 +1,7 @@
 #' Create metadata log from calval tracking sheet
 #'
-#' @param path File path to the Log folder.
+#' @param path File path to the Log folder. Default is the log folder in the
+#'   event_id folder on the CMAR R drive.
 #'
 #' @param event_id The event_id for which to create the log. Must match an entry
 #'   in the event_id column of the calval tracking sheet.
@@ -15,13 +16,26 @@
 #' @export
 #'
 
-cv_create_log <- function(path = NULL, event_id) {
+cv_create_log <- function(event_id, path = NULL) {
 
   event_id <- tolower(event_id)
 
- # if(is.null(path)) path <- ""
+  if(grepl("val", x = event_id, ignore.case = TRUE)) {
+    calval_sheet <- "pre"
+  }
+  if(grepl("post", x = event_id, ignore.case = TRUE)) {
+    calval_sheet <- "post"
+  }
 
-  tracking <- cv_read_calval_tracking() %>%
+
+  if(is.null(path)) {
+    path <- "R:/data_branches/water_quality/validation/validation_data"
+    path <- file.path(paste0(path, "/", event_id, "/log"))
+
+    if(isFALSE(dir.exists(path))) dir.create(path)
+  }
+
+  tracking <- cv_read_calval_tracking(sheet = calval_sheet) %>%
     filter(event_id == !!event_id)
 
   if(nrow(tracking) == 0) {
@@ -29,15 +43,17 @@ cv_create_log <- function(path = NULL, event_id) {
   }
 
   tracking %>%
+    mutate(
+      deployment_date = format(start_date),
+      retrieval_date = format(end_date)
+    ) %>%
     select(
-      event_id,
-      deployment = start_date,
-      retrieval = end_date,
+      event_id, deployment_date, retrieval_date,
       sensor_type, sensor_serial_number
     ) %>%
     distinct() %>%
     fwrite(
-      file = paste0(path, "/log/", event_id, "_log.csv"),
+      file = paste0(path, "/", event_id, "_log.csv"),
       na = "NA",
       showProgress = TRUE,
       col.names = TRUE
