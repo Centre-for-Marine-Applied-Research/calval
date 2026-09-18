@@ -41,5 +41,5 @@ Returns a list of ggplot objects; one figure for each variable in
   \code{vars}.
 }
 \description{
-Plot sensor data coloured by flag value
+Ignores `tilt_degree` variable.
 }

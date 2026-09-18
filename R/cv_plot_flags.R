@@ -113,9 +113,7 @@ cv_plot_flags <- function(
 #'   flag for \code{var}.
 #'
 #' @importFrom dplyr filter
-#' @importFrom ggplot2 aes geom_point geom_ribbon ggplot guides guide_legend
-#'   labs scale_colour_manual scale_x_datetime scale_y_continuous theme_light
-#'   theme
+#' @importFrom ggplot2 aes geom_point geom_ribbon ggplot guides guide_legend labs scale_colour_manual scale_x_datetime scale_y_continuous theme_light theme
 #' @importFrom rlang sym
 #'
 
