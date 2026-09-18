@@ -5,7 +5,6 @@
 # other technical solution here:
 # https://dplyr.tidyverse.org/articles/programming.html
 
-
 utils::globalVariables(
   c(
     # helpers
@@ -67,11 +66,5 @@ utils::globalVariables(
     "tol_lower",
     "tol_upper",
     "value"
-  ))
-
-
-
-
-
-
-
+  )
+)
