@@ -27,15 +27,14 @@
 #' @export
 
 cv_round_timestamps <- function(
-    dat,
-    do_percent_sat_int = "10 minutes",
-    do_mg_l_int = "15 minutes",
-    ph_int = "10 minutes",
-    sal_int = "10 minutes",
-    temp_int = "15 minutes"
+  dat,
+  do_percent_sat_int = "10 minutes",
+  do_mg_l_int = "15 minutes",
+  ph_int = "10 minutes",
+  sal_int = "10 minutes",
+  temp_int = "15 minutes"
 ) {
-
-  if(!is.POSIXct(dat$timestamp_utc)) {
+  if (!is.POSIXct(dat$timestamp_utc)) {
     stop("timestamp_utc must be class POSIXct")
   }
 
@@ -53,7 +52,10 @@ cv_round_timestamps <- function(
 
         variable == "salinity_psu" ~ round_date(timestamp_utc, sal_int),
 
-        variable == "temperature_degree_c" ~ round_date(timestamp_utc, temp_int),
+        variable == "temperature_degree_c" ~ round_date(
+          timestamp_utc,
+          temp_int
+        ),
 
         TRUE ~ NA
       )

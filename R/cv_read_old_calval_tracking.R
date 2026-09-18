@@ -18,17 +18,19 @@
 #'   retrieval datetimes are appended in "Canada/Atlantic" and "UTC" timezones.
 #' @export
 
-
 cv_read_old_calval_tracking <- function(link = NULL, sheet = "pre") {
-
-  if(is.null(link)) {
+  if (is.null(link)) {
     link <- "https://docs.google.com/spreadsheets/d/1u1beyNL02NQvMblhkpGX9tazRqlhfZaJbzifvOKNP54/edit#gid=0"
   }
 
   sheet <- tolower(sheet)
 
-  if(str_detect(sheet, "pre")) sheet <- "Pre Deployment CalVal"
-  if(str_detect(sheet, "post")) sheet <- "Post Deployment Validation"
+  if (str_detect(sheet, "pre")) {
+    sheet <- "Pre Deployment CalVal"
+  }
+  if (str_detect(sheet, "post")) {
+    sheet <- "Post Deployment Validation"
+  }
 
   googlesheets4::gs4_deauth()
 
@@ -62,19 +64,27 @@ cv_read_old_calval_tracking <- function(link = NULL, sheet = "pre") {
     mutate(
       val_start_time = if_else(
         nchar(val_start_time) == 4 |
-        nchar(val_start_time) == 5,
-        paste0(val_start_time, ":00"), val_start_time),
+          nchar(val_start_time) == 5,
+        paste0(val_start_time, ":00"),
+        val_start_time
+      ),
 
       val_end_time = if_else(
         nchar(val_end_time) == 4 |
           nchar(val_end_time) == 5,
-        paste0(val_end_time, ":00"), val_end_time),
+        paste0(val_end_time, ":00"),
+        val_end_time
+      ),
 
       deployment_can = as_datetime(
-        paste(val_start_date, val_start_time), tz = "Canada/Atlantic"),
+        paste(val_start_date, val_start_time),
+        tz = "Canada/Atlantic"
+      ),
 
       retrieval_can = as_datetime(
-        paste(val_end_date, val_end_time), tz = "Canada/Atlantic"),
+        paste(val_end_date, val_end_time),
+        tz = "Canada/Atlantic"
+      ),
 
       deployment_utc = with_tz(deployment_can, tzone = "UTC"),
       retrieval_utc = with_tz(retrieval_can, tzone = "UTC")
