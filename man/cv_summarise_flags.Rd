@@ -21,5 +21,5 @@ Returns a summary of observations that passed and failed for each
   variable and sensor.
 }
 \description{
-Validation results for each sensor and variable
+Ignores `tilt_degree` column.
 }
