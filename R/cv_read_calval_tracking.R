@@ -15,18 +15,16 @@
 #'   retrieval datetimes are appended in "Canada/Atlantic" and "UTC" timezones.
 #' @export
 
-
 cv_read_calval_tracking <- function(link = NULL, sheet = "pre") {
-
-  if(is.null(link)) {
+  if (is.null(link)) {
     link <- "https://docs.google.com/spreadsheets/d/19qijvQJcAMg0TQ-Bm3plZ_3CnqHjuuw3XgkdzjU1jcc/edit?gid=0#gid=0"
   }
 
   sheet <- tolower(sheet)
 
-  if(sheet == "pre") {
+  if (sheet == "pre") {
     sheet <- "pre_deployment"
-  } else if(sheet == "post") {
+  } else if (sheet == "post") {
     sheet <- "post_deployment"
   } else {
     stop("Invalid entry for sheet.\nsheet must be pre or post")
@@ -45,19 +43,25 @@ cv_read_calval_tracking <- function(link = NULL, sheet = "pre") {
 
       start_time_ast = if_else(
         nchar(start_time_ast) == 4 | nchar(start_time_ast) == 5,
-        paste0(start_time_ast, ":00"), start_time_ast
+        paste0(start_time_ast, ":00"),
+        start_time_ast
       ),
 
       end_time_ast = if_else(
         nchar(end_time_ast) == 4 | nchar(end_time_ast) == 5,
-        paste0(end_time_ast, ":00"), end_time_ast
+        paste0(end_time_ast, ":00"),
+        end_time_ast
       ),
 
       deployment_ast = as_datetime(
-        paste(start_date, start_time_ast), tz = "Canada/Atlantic"),
+        paste(start_date, start_time_ast),
+        tz = "Canada/Atlantic"
+      ),
 
       retrieval_ast = as_datetime(
-        paste(end_date, end_time_ast), tz = "Canada/Atlantic")
+        paste(end_date, end_time_ast),
+        tz = "Canada/Atlantic"
+      )
 
       # deployment_utc = with_tz(deployment_ast, tzone = "UTC"),
       # retrieval_utc = with_tz(retrieval_ast, tzone = "UTC")

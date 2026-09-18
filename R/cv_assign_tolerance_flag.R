@@ -24,17 +24,16 @@
 #'
 #' @export
 
-
 cv_assign_tolerance_flag <- function(dat, tolerance = NULL, vr2ar_tol = 0.5) {
-
-  if(is.null(tolerance)) {
+  if (is.null(tolerance)) {
     tolerance <- data.frame(
       variable = c(
         "dissolved_oxygen_percent_saturation",
         "dissolved_oxygen_uncorrected_mg_per_l",
         "ph_ph",
         "salinity_psu",
-        "temperature_degree_c"),
+        "temperature_degree_c"
+      ),
       tolerance = c(5, 0.2, 0.1, 1, 0.2)
     )
   }
@@ -42,10 +41,14 @@ cv_assign_tolerance_flag <- function(dat, tolerance = NULL, vr2ar_tol = 0.5) {
   dat <- dat %>%
     left_join(tolerance, by = join_by(variable))
 
-  if(!is.null(vr2ar_tol)) {
+  if (!is.null(vr2ar_tol)) {
     dat <- dat %>%
-      mutate(tolerance = if_else(
-        str_detect(sensor_type, "vr2ar"), vr2ar_tol, tolerance)
+      mutate(
+        tolerance = if_else(
+          str_detect(sensor_type, "vr2ar"),
+          vr2ar_tol,
+          tolerance
+        )
       )
   }
 

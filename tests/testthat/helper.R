@@ -4,26 +4,6 @@ path <- system.file("testdata", package = "calval")
 
 calval_tracking <- cv_read_calval_tracking()
 
-
-# cv_val_trimtimes --------------------------------------------------------
-
-# tstamp_do <- as_datetime("2025-01-09 10:45:00")
-# tstamp_temp <- tstamp_do + lubridate::hours(12)
-#
-# df_tt <- data.frame(
-#   variable = c(
-#     rep("dissolved_oxygen_percent_saturation", 3),
-#     rep("temperature_degree_c", 2),
-#     rep("salinity_psu", 2)
-#   ),
-#   deployment_utc = c(
-#     tstamp_do, tstamp_do + lubridate::hours(1), tstamp_do + lubridate::hours(2),
-#     tstamp_temp, tstamp_temp + lubridate::hours(1),
-#     tstamp_temp, tstamp_temp + lubridate::hours(1))
-# ) %>%
-#   mutate(retrieval_utc = deployment_utc + lubridate::days(1))
-
-
 # cv_round_timestamps -----------------------------------------------------
 
 df_round <- data.frame(
@@ -34,20 +14,24 @@ df_round <- data.frame(
     "dissolved_oxygen_percent_saturation"
   ),
   timestamp_utc = as_datetime(
-    c("2024-01-09 11:21:00",
+    c(
+      "2024-01-09 11:21:00",
       "2021-07-30 17:57:00",
       "2020-03-15 08:14:00",
       "2020-03-15 08:14:00"
-    ))
+    )
+  )
 )
-
 
 # cv_assign_tolerance_flag ------------------------------------------------
 
 dat <- readRDS(
-  paste(system.file("testdata", package = "calval"),
-        "test_data_tolerance.RDS", sep = "/")
+  paste(
+    system.file("testdata", package = "calval"),
+    "test_data_tolerance.RDS",
+    sep = "/"
   )
+)
 
 # calval pipeline
 dat_tol <- dat %>%
@@ -72,9 +56,20 @@ tol_do_1 <- dat_tol %>%
   filter(variable == "dissolved_oxygen_percent_saturation") %>%
   dplyr::anti_join(
     tol_do_4,
-    by = join_by(timestamp_utc, variable, sensor_type,
-                 sensor_serial_number, value, round_timestamp, tolerance, med, tol_lower,
-                 tol_upper, qc_flag, hour_utc)
+    by = join_by(
+      timestamp_utc,
+      variable,
+      sensor_type,
+      sensor_serial_number,
+      value,
+      round_timestamp,
+      tolerance,
+      med,
+      tol_lower,
+      tol_upper,
+      qc_flag,
+      hour_utc
+    )
   )
 
 tol_temp_4 <- dat_tol %>%
@@ -89,9 +84,23 @@ tol_temp_1 <- dat_tol %>%
   filter(variable == "temperature_degree_c") %>%
   dplyr::anti_join(
     tol_temp_4,
-    by = join_by(timestamp_utc, variable, sensor_type,
-                 sensor_serial_number, value, round_timestamp, tolerance, med, tol_lower,
-                 tol_upper, qc_flag, hour_utc)
+    by = join_by(
+      timestamp_utc,
+      variable,
+      sensor_type,
+      sensor_serial_number,
+      value,
+      round_timestamp,
+      tolerance,
+      med,
+      tol_lower,
+      tol_upper,
+      qc_flag,
+      hour_utc
+    )
   )
 
+# cv_summarise_flags -----------------------------------------------------
 
+dat_summary <- dat_tol |>
+  cv_summarise_flags()

@@ -1,5 +1,7 @@
 #' Validation results for each sensor and variable
 #'
+#' Ignores `tilt_degree` column.
+#'
 #' @param dat Data frame of compiled and flagged validation data, as returned
 #'   from \code{cv_assign_tolerance_flag()}.
 #'
@@ -19,10 +21,9 @@
 #'
 #' @export
 
-
 cv_summarise_flags <- function(dat, wide = TRUE, dt = FALSE) {
-
   dat <- dat %>%
+    filter(variable != "tilt_degree") %>%
     group_by(variable, sensor_type, sensor_serial_number, qc_flag) %>%
     summarise(n = n()) %>%
     group_by(variable, sensor_type, sensor_serial_number) %>%
@@ -31,12 +32,16 @@ cv_summarise_flags <- function(dat, wide = TRUE, dt = FALSE) {
     select(-n) %>%
     qc_assign_flag_labels()
 
-  if(isTRUE(wide)) {
+  if (isTRUE(wide)) {
     dat <- dat %>%
       pivot_wider(names_from = qc_flag, values_from = n_percent) #%>%
 
-    if(!("Fail" %in% colnames(dat))) dat <- dat %>% mutate(Fail = NA)
-    if(!("Pass" %in% colnames(dat))) dat <- dat %>% mutate(Pass = NA)
+    if (!("Fail" %in% colnames(dat))) {
+      dat <- dat %>% mutate(Fail = NA)
+    }
+    if (!("Pass" %in% colnames(dat))) {
+      dat <- dat %>% mutate(Pass = NA)
+    }
 
     dat <- dat %>%
       mutate(
@@ -46,10 +51,7 @@ cv_summarise_flags <- function(dat, wide = TRUE, dt = FALSE) {
       select(-c(Pass, Fail))
   }
 
-  # dat <- dat %>%
-  #   arrange(desc(Fail))
-
-  if(isTRUE(dt)) {
+  if (isTRUE(dt)) {
     datatable(
       dat,
       rownames = FALSE,
@@ -61,6 +63,7 @@ cv_summarise_flags <- function(dat, wide = TRUE, dt = FALSE) {
         columnDefs = list(list(className = 'dt-center', targets = "_all"))
       )
     )
-  } else dat
-
+  } else {
+    dat
+  }
 }

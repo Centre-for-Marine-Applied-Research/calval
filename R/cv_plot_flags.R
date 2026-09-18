@@ -1,5 +1,7 @@
 #' Plot sensor data coloured by flag value
 #'
+#' Ignores `tilt_degree` variable.
+#'
 #' @param dat Data frame of flagged validation data in long or wide format.
 #'
 #' @param vars Character vector of variables to plot. Default is \code{vars =
@@ -33,15 +35,14 @@
 #'
 
 cv_plot_flags <- function(
-    dat,
-    vars = "all",
-    colour_col = "qc_flag",
-    pal = NULL,
-    plot_title = NA,
-    plotly_friendly = FALSE,
-    point_size = 1
-    ) {
-
+  dat,
+  vars = "all",
+  colour_col = "qc_flag",
+  pal = NULL,
+  plot_title = NA,
+  plotly_friendly = FALSE,
+  point_size = 1
+) {
   p <- list()
 
   if (!("variable" %in% colnames(dat))) {
@@ -49,19 +50,22 @@ cv_plot_flags <- function(
   }
 
   dat <- dat %>%
+    filter(variable != "tilt_degree") %>%
     mutate(
       qc_flag = case_when(qc_flag == 1 ~ "Pass", qc_flag == 4 ~ "Fail"),
       qc_flag = ordered(qc_flag, levels = c("Pass", "Fail"))
     )
 
-  if (vars == "all") vars <- unique(dat$variable)
+  if (vars == "all") {
+    vars <- unique(dat$variable)
+  }
 
-  if(is.null(pal)) {
-    if(colour_col == "qc_flag") {
+  if (is.null(pal)) {
+    if (colour_col == "qc_flag") {
       pal <- c("chartreuse4", "#DB4325")
     } else {
       n_colours <- nrow(unique(dat[, colour_col]))
-      if(n_colours <= 8) {
+      if (n_colours <= 8) {
         pal <- brewer.pal(8, "Dark2")
       } else {
         pal <- colorRampPalette(brewer.pal(8, "Dark2"))(n_colours)
@@ -116,44 +120,49 @@ cv_plot_flags <- function(
 #'
 
 cv_ggplot_flags <- function(
-    dat,
-    var,
-    colour_col = "qc_flag",
-    pal = NULL,
-    plot_title = NA,
-    plotly_friendly = FALSE,
-    point_size = 1
+  dat,
+  var,
+  colour_col = "qc_flag",
+  pal = NULL,
+  plot_title = NA,
+  plotly_friendly = FALSE,
+  point_size = 1
 ) {
-
   # if(var == "dissolved_oxygen_percent_saturation") {
   #   y_limits <- c(80, 120)
   # } else y_limits <- NULL
 
   y_limits <- NULL
 
-
   sensors <- unique(dat$sensor_type)
 
   #if(length(sensors[-which(str_detect(sensors, "vr2ar"))]) > 0) {
-  if(nrow(filter(dat, !str_detect(sensor_type, "vr2ar"))) > 0) {
+  if (nrow(filter(dat, !str_detect(sensor_type, "vr2ar"))) > 0) {
     var_ribbon <- geom_ribbon(
       data = filter(dat, !str_detect(sensor_type, "vr2ar")),
       aes(ymin = tol_lower, ymax = tol_upper),
-      alpha = 0.3, col = "grey20", fill = "grey75"
+      alpha = 0.3,
+      col = "grey20",
+      fill = "grey75"
     )
-  } else var_ribbon <- NULL
+  } else {
+    var_ribbon <- NULL
+  }
 
-  if(any(str_detect(sensors, "vr2ar"))) {
-
+  if (any(str_detect(sensors, "vr2ar"))) {
     temp_vr <- dat %>%
       filter(str_detect(sensor_type, "vr2ar"))
 
     vr2_ribbon <- geom_ribbon(
       data = temp_vr,
       aes(ymin = tol_lower, ymax = tol_upper),
-      alpha = 0.3, col = "grey20", fill = "grey87"
+      alpha = 0.3,
+      col = "grey20",
+      fill = "grey87"
     )
-  } else vr2_ribbon <- NULL
+  } else {
+    vr2_ribbon <- NULL
+  }
 
   p <- dat %>%
     ggplot(aes(round_timestamp, value, colour = !!sym(colour_col))) +
@@ -164,9 +173,11 @@ cv_ggplot_flags <- function(
     scale_colour_manual(colour_col, values = pal, drop = FALSE) +
     theme_light()
 
-  if(!is.na(plot_title)) p <- p + labs(title = plot_title)
+  if (!is.na(plot_title)) {
+    p <- p + labs(title = plot_title)
+  }
 
-  if(isFALSE(plotly_friendly)) {
+  if (isFALSE(plotly_friendly)) {
     p <- p + guides(color = guide_legend(override.aes = list(size = 4)))
   }
 
