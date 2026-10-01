@@ -21,6 +21,7 @@
 #'
 #' @importFrom dplyr if_else group_by join_by left_join mutate ungroup
 #' @importFrom stats median
+#' @importFrom stringr str_detect
 #'
 #' @export
 
