@@ -17,24 +17,27 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     data.table,
-    dplyr,
+    dplyr (>= 1.1.0),
     DT,
     ggplot2,
     googlesheets4,
+    grDevices,
     lubridate,
     qaqcmar (>= 1.0.8),
     RColorBrewer,
     rlang,
-    sensorstrings (>= 1.0.2),
+    sensorstrings (>= 1.4.1),
     stats,
     stringr,
-    tidyr
-Remotes: 
-    https://github.com/Centre-for-Marine-Applied-Research/qaqcmar,
-    https://github.com/Centre-for-Marine-Applied-Research/sensorstrings
+    tidyr (>= 1.0.0)
+Remotes:  
+    Centre-for-Marine-Applied-Research/qaqcmar,
+    Centre-for-Marine-Applied-Research/sensorstrings
 URL: https://github.com/Centre-for-Marine-Applied-Research/calval
 BugReports: https://github.com/Centre-for-Marine-Applied-Research/calval/issues
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Config/roxygen2/version: 8.0.0
+Depends: 
+    R (>= 4.3)
