@@ -28,16 +28,13 @@ cv_create_log <- function(event_id, path = NULL) {
 
   if (is.null(path)) {
     path <- "R:/data_branches/water_quality/validation/validation_data"
-    path <- file.path(paste0(path, "/", event_id, "/log"))
+    path <- file.path(paste0(path, "/", event_id))
 
-    if (isFALSE(dir.exists(path))) {
-      possible_path <- dir.create(path) # can the path be generated?
-
-      if (isTRUE(possible_path)) {
-        dir.create(path)
-      } else {
-        stop("Cannot create log folder. Check the file path exists: ", path)
-      }
+    if(isTRUE(dir.exists(path))) {
+      path <- file.path(paste0(path, "/log"))
+      dir.create(path)
+    } else {
+      stop("Cannot create log folder. Check the file path exists: ", path)
     }
   }
 
