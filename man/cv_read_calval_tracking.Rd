@@ -16,7 +16,7 @@ abbreviation of the sheet name. Options are \code{sheet = "pre"} and
 }
 \value{
 Returns a data frame of the calval tracking sheet. Deployment and
-  retrieval datetimes are appended in "Canada/Atlantic" and "UTC" timezones.
+  retrieval datetimes are appended in "America/Halifax" and "UTC" timezones.
 }
 \description{
 Read in CMAR calval tracking sheet

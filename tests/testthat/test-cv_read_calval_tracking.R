@@ -5,12 +5,12 @@ test_that("calval_tracking has correct number of columns", {
 test_that("deployment_can and retrieval_can are assigned correct tzone", {
   expect_equal(
     lubridate::tz(calval_tracking$deployment_ast),
-    "Canada/Atlantic"
+    "America/Halifax"
   )
 
   expect_equal(
     lubridate::tz(calval_tracking$retrieval_ast),
-    "Canada/Atlantic"
+    "America/Halifax"
   )
 })
 

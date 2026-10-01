@@ -12,7 +12,7 @@
 #' @importFrom lubridate with_tz
 #'
 #' @return Returns a data frame of the calval tracking sheet. Deployment and
-#'   retrieval datetimes are appended in "Canada/Atlantic" and "UTC" timezones.
+#'   retrieval datetimes are appended in "America/Halifax" and "UTC" timezones.
 #' @export
 
 cv_read_calval_tracking <- function(link = NULL, sheet = "pre") {
@@ -55,12 +55,12 @@ cv_read_calval_tracking <- function(link = NULL, sheet = "pre") {
 
       deployment_ast = as_datetime(
         paste(start_date, start_time_ast),
-        tz = "Canada/Atlantic"
+        tz = "America/Halifax"
       ),
 
       retrieval_ast = as_datetime(
         paste(end_date, end_time_ast),
-        tz = "Canada/Atlantic"
+        tz = "America/Halifax"
       )
 
       # deployment_utc = with_tz(deployment_ast, tzone = "UTC"),
